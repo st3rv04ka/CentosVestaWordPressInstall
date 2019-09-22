@@ -35,6 +35,8 @@ yum -y update
 yum -y install mariadb mariadb-server
 systemctl start mariadb
 systemctl enable mariadb.service
+service nginx restart
+service httpd restart
 
 # WP-CLI
 
