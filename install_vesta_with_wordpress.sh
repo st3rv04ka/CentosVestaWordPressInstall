@@ -16,6 +16,26 @@ yum -y update
 curl -O http://vestacp.com/pub/vst-install.sh
 bash vst-install.sh --interactive no --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd yes --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav no --softaculous no --mysql yes --postgresql no --hostname $1 --email info@$1 -f >> isntall.log
 
+# Update MySql And Install php-opcache
+
+yum -y install php-opcache
+service mysqld stop
+yum -y remove mariadb mariadb-server
+touch /etc/yum.repos.d/MariaDB.repo
+cat <<EOT >> /etc/yum.repos.d/MariaDB.repo
+# Used to install MariaDB 10 instead of default 5.5
+# http://mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = https://yum.mariadb.org/10.2/centos7-amd64/
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+EOT
+yum -y update
+yum -y install mariadb mariadb-server
+systemctl start mariadb
+systemctl enable mariadb.service
+
 # WP-CLI
 
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
