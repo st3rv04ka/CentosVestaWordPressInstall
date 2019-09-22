@@ -5,16 +5,16 @@ if [ -z "$1" ]
     exit 1
 fi
 
+# VestaCP
+
+curl -O http://vestacp.com/pub/vst-install.sh
+bash vst-install.sh --interactive no --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd yes --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav no --softaculous no --mysql yes --postgresql no --hostname $1 --email info@$1 -f >> isntall.log
+
 # Server
 
 yum -y install yum-utils openssl
 yum-config-manager --enable remi-php74
 yum -y update
-
-# VestaCP
-
-curl -O http://vestacp.com/pub/vst-install.sh
-bash vst-install.sh --interactive no --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd yes --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav no --softaculous no --mysql yes --postgresql no --hostname $1 --email info@$1 -f >> isntall.log
 
 # Update MySql And Install php-opcache
 
