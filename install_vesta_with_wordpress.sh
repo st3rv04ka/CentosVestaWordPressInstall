@@ -5,6 +5,8 @@ if [ -z "$1" ]
     exit 1
 fi
 
+yum -y update
+
 # VestaCP
 
 curl -O http://vestacp.com/pub/vst-install.sh
