@@ -40,6 +40,10 @@ systemctl enable mariadb.service
 service nginx restart
 service httpd restart
 
+# SSL
+
+/usr/local/vesta/bin/v-add-letsencrypt-domain admin $1
+
 # WP-CLI
 
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
