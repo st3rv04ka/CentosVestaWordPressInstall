@@ -7,16 +7,16 @@ fi
 
 yum -y update
 
-# VestaCP
-
-curl -O http://vestacp.com/pub/vst-install.sh
-bash vst-install.sh --interactive no --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd yes --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav no --softaculous no --mysql yes --postgresql no --hostname $1 --email info@$1 -f >> isntall.log
-
 # Server
 
 yum -y install yum-utils openssl
 yum-config-manager --enable remi-php74
 yum -y update
+
+# VestaCP
+
+curl -O http://vestacp.com/pub/vst-install.sh
+bash vst-install.sh --interactive no --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd yes --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav no --softaculous no --mysql yes --postgresql no --hostname $1 --email info@$1 -f >> isntall.log
 
 # Update MySql And Install php-opcache
 
@@ -40,10 +40,6 @@ systemctl enable mariadb.service
 service nginx restart
 service httpd restart
 
-# SSL
-
-/usr/local/vesta/bin/v-add-letsencrypt-domain admin $1
-
 # WP-CLI
 
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -65,6 +61,10 @@ wp core download --allow-root
 wp core config --dbname=admin_$db --dbuser=admin_$user --dbpass=$pass --dbhost=localhost --dbprefix=wp_ --allow-root
 wp core install --url=http://$1 --title=$1 --admin_user=admin --admin_password=$passwp --admin_email=info@$1 --allow-root
 chown -R admin:admin /home/admin/web/$1/public_html
+
+# SSL
+
+/usr/local/vesta/bin/v-add-letsencrypt-domain admin $1
 
 echo "WordPress"
 echo "User: admin"
